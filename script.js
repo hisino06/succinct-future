@@ -112,3 +112,7 @@ function shareOnX() {
   const tweet = encodeURIComponent(`${result} Check your Succinct TGE future at ${window.location.href}! #SuccinctLabs`);
   window.open(`https://x.com/intent/tweet?text=${tweet}`, '_blank');
 }
+setInterval(() => {
+  console.log('Attempting to create egg...');
+  createEgg();
+}, 300);
