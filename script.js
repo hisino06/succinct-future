@@ -1,17 +1,55 @@
-function predictFuture() {
-  const username = document.getElementById('username').value.trim().toLowerCase();
-  const resultDiv = document.getElementById('result');
-  console.log('predictFuture called, username:', username, 'resultDiv:', resultDiv);
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('button[onclick="predictFuture()"]').addEventListener('click', predictFuture);
 
+  // Egg rain animation with variations
+  function createEgg() {
+    const egg = document.createElement('div');
+    egg.className = 'egg';
+    const animationTypes = ['fall-slow', 'fall-fast', 'fall-wobbly'];
+    const randomAnimation = animationTypes[Math.floor(Math.random() * animationTypes.length)];
+
+    // Random position, size, and duration
+    egg.style.left = Math.random() * 100 + 'vw';
+    egg.style.width = Math.random() * 20 + 20 + 'px'; // Random width between 20-40px
+    egg.style.height = (parseInt(egg.style.width) * 1.33) + 'px'; // Maintain aspect ratio
+    egg.style.animationDuration = Math.random() * 5 + 3 + 's'; // 3-8s duration
+    egg.style.animationName = randomAnimation;
+    egg.style.animationDelay = Math.random() * 2 + 's'; // Random delay
+
+    document.getElementById('egg-rain').appendChild(egg);
+
+    // Remove egg when animation ends
+    egg.addEventListener('animationend', () => {
+      egg.remove();
+    });
+  }
+
+  // Create eggs at intervals
+  setInterval(createEgg, 300); // New egg every 300ms
+
+  // Clean up old eggs if too many
+  setInterval(() => {
+    const eggs = document.querySelectorAll('.egg');
+    if (eggs.length > 50) {
+      eggs[0].remove();
+    }
+  }, 1000);
+});
+
+function predictFuture() {
+  console.log('predictFuture function started');
+  const username = document.getElementById('username').value.trim().toLowerCase();
+  console.log('Username fetched:', username);
+  const resultDiv = document.getElementById('result');
+  console.log('Result div:', resultDiv);
   if (!username) {
     resultDiv.innerHTML = 'Please enter a valid X username!';
     console.log('No username entered');
     return;
   }
 
-  // Special outcomes for notable users
   const specialUsers = {
-    'x nair_advaith': `🌟 ${username}, OG of the Succinct Prover Network! Your testnet legacy inspires all!`,
+    'advaith': `🌟 ${username}, OG of the Succinct Prover Network! Your testnet legacy inspires all!`,
     '0xcrashout': `🔥 ${username}, OG trailblazer! Your dev skills power Succinct’s ZK revolution!`,
     'pumatheuma': `👑 ${username}, CEO/Founder of Succinct Labs! Your vision shapes the future of zero-knowledge tech!`
   };
@@ -22,9 +60,8 @@ function predictFuture() {
     return;
   }
 
-  // Mock logic for other users
   const lengthScore = username.length;
-  const alignmentScore = Math.random(); // Simulate alignment check
+  const alignmentScore = Math.random();
   let outcome;
 
   if (lengthScore > 8 && alignmentScore > 0.3) {
